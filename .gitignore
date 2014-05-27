@@ -29,6 +29,12 @@ local.properties
 .buildpath
 
 
+#
+# IntelliJ
+#
+.idea/
+.iml
+
 #################
 ## Visual Studio
 #################
