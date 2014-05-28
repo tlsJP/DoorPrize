@@ -33,7 +33,7 @@ local.properties
 # IntelliJ
 ##
 .idea/
-.iml
+*.iml
 
 #################
 ## Visual Studio
