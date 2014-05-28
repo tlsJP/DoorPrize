@@ -8,15 +8,27 @@ import org.slf4j.LoggerFactory;
 import java.util.Random;
 
 /**
+ * Basic structure for a Game That has x number of doors.  a contestant can pick
+ * a door that may have a prize behind it.  All but one other remaining door is
+ * exposed, leaving the contestant with an option to switch to the other door.
+ *
  * Created with IntelliJ IDEA.
  * User: jalbert
  * Date: 5/27/14
  * Time: 1:13 PM
- * To change this template use File | Settings | File Templates.
  */
 public class Game {
 
     private Logger logger = LoggerFactory.getLogger(Game.class);
+
+    public int getNumberOfDoors() {
+        return numberOfDoors;
+    }
+
+    public void setNumberOfDoors(int numberOfDoors) {
+        this.numberOfDoors = numberOfDoors;
+    }
+
     private int numberOfDoors;
     private int winningDoorNumber;
     private int lastChanceDoorNumber;
@@ -25,6 +37,7 @@ public class Game {
     public Game(int numberOfDoors) {
         this.numberOfDoors = numberOfDoors;
         winningDoorNumber = getRandomInt(numberOfDoors);
+
         if (logger.isDebugEnabled()) {
             logger.info("Winning door number : " + winningDoorNumber);
         }
@@ -33,22 +46,6 @@ public class Game {
 
     public int getWinningDoorNumber() {
         return winningDoorNumber;
-    }
-
-    public void setWinningDoorNumber(int winningDoorNumber) {
-        this.winningDoorNumber = winningDoorNumber;
-    }
-
-    public int getLastChanceDoorNumber() {
-        return lastChanceDoorNumber;
-    }
-
-    public void setLastChanceDoorNumber(int lastChanceDoorNumber) {
-        this.lastChanceDoorNumber = lastChanceDoorNumber;
-    }
-
-    public int getSelectedDoorNumber() {
-        return selectedDoorNumber;
     }
 
     public void setSelectedDoorNumber(int selectedDoorNumber) {
@@ -61,7 +58,7 @@ public class Game {
     /* This method simulates exposing all remaining doors to the contestant except for one.
      * This door is the contestant's last chance to switch to in an attempt to win the prize.
      */
-    private void exposeAllButPrizeContainer() {
+    public void exposeAllButPrizeContainer() {
 
         /* If the selected door number is the winning door number, then any other door number will suffice
          * as the lat chance door number
@@ -79,7 +76,7 @@ public class Game {
         }
     }
 
-    private int getRandomInt(int maximum) {
+    public int getRandomInt(int maximum) {
         Random r = new Random();
         return r.nextInt(maximum);
     }
@@ -98,24 +95,12 @@ public class Game {
         return ToStringBuilder.reflectionToString(this, ToStringStyle.MULTI_LINE_STYLE);
     }
 
-    private void switchToLastChanceDoor() {
+    public void switchToLastChanceDoor() {
         if (logger.isDebugEnabled()) {
             logger.info("Contestant switched to the last-chance door!");
         }
         selectedDoorNumber = lastChanceDoorNumber;
     }
 
-    /* Path A is where the contestant picks a door, and stays with their selection
-     * even after being presented with one other door.
-     */
-    public void executePathA(int selectedDoorNumber) {
-        this.setSelectedDoorNumber(selectedDoorNumber);
-        this.exposeAllButPrizeContainer();
-    }
 
-    // Path B is where the contestant picks a door, then switches to the last-chance-door
-    public void executePathB(int selectedDoorNumber) {
-        this.executePathA(selectedDoorNumber);
-        this.switchToLastChanceDoor();
-    }
 }
